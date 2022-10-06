@@ -27,6 +27,8 @@ namespace BC2_AMD_Hero {
         }
 
         private void Setup() {
+            _delta.text = _deltaSubtitle.text = _message.text = _subtitle.text = string.Empty;
+
             var h = LoadHeroFromDisk();
             if (h == null) return;
 
