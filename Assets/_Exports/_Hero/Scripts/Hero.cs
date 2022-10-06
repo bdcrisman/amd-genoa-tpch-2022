@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace BC2_AMD_Hero {
     [RequireComponent(typeof(CanvasGroup))]
@@ -17,14 +20,19 @@ namespace BC2_AMD_Hero {
         private bool _isDisplay;
 
         private void OnEnable() {
+            Setup();
+
             _cg = GetComponent<CanvasGroup>();
             _cg.alpha = 0;
         }
 
-        public void Setup(HeroModel h) {
+        private void Setup() {
+            var h = LoadHeroFromDisk();
+            if (h == null) return;
+
             _isDisplay = h.IsDisplay;
             _delayToDisplay = h.DelayToDisplay;
-            _delta.text = h.Delta;
+            _delta.text = $"{h.Delta}{h.DeltaUnits}";
             _deltaSubtitle.text = h.DeltaSubtitle;
             _message.text = h.Message;
             _subtitle.text = h.Subtitle;
@@ -48,14 +56,24 @@ namespace BC2_AMD_Hero {
 
             _cg.alpha = 1;
         }
+
+        private HeroModel LoadHeroFromDisk() {
+            try {
+                return JsonConvert.DeserializeObject<HeroModel>(File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "hero", "hero.json")));
+            } catch (Exception ex) {
+                print(ex.ToString());
+                return null;
+            }
+        }
     }
 
     public class HeroModel {
-        public bool IsDisplay { get; set; }
-        public float DelayToDisplay { get; set; }
-        public string Delta { get; set; }
-        public string DeltaSubtitle { get; set; }
-        public string Message { get; set; }
-        public string Subtitle { get; set; }
+        [JsonProperty("display")] public bool IsDisplay { get; set; }
+        [JsonProperty("delayToDisplay")] public float DelayToDisplay { get; set; }
+        [JsonProperty("delta")] public string Delta { get; set; }
+        [JsonProperty("deltaUnits")] public string DeltaUnits { get; set; }
+        [JsonProperty("deltaSubtitle")] public string DeltaSubtitle { get; set; }
+        [JsonProperty("message")] public string Message { get; set; }
+        [JsonProperty("subtitle")] public string Subtitle { get; set; }
     }
 }

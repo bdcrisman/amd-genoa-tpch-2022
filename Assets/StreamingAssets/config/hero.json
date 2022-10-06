@@ -1,0 +1,9 @@
+{
+    "display": true,
+    "delayToDisplay": 2.0,
+    "delta": 2.1,
+    "deltaUnits": "X",
+    "deltaSubtitle": "(up to)",
+    "message": "HIGHER\nPERFORMANCE",
+    "subtitle": "Black-Scholes European option pricing"
+}
