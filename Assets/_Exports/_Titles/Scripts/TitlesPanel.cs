@@ -19,7 +19,7 @@ public class TitlesPanel : MonoBehaviour {
         _mainTitle.text = _compTitle.text = _compSubtitle.text = _amdTitle.text = _amdSubtitle.text = string.Empty;
 
         var t = LoadTitlesFromDisk();
-        if (t == null) return;
+        if (t == null || !t.IsDisplay) return;
 
         _mainTitle.text = t.MainTitle;
         _compTitle.text = t.CompTitle;
@@ -39,10 +39,10 @@ public class TitlesPanel : MonoBehaviour {
 }
 
 public class TitlesDataModel {
+    [JsonProperty("display")] public bool IsDisplay { get; set; }
     [JsonProperty("main")] public string MainTitle { get; set; }
     [JsonProperty("comp")] public string CompTitle { get; set; }
     [JsonProperty("compSubtitle")] public string CompSubtitle { get; set; }
-
     [JsonProperty("amd")] public string AmdTitle { get; set; }
     [JsonProperty("amdSubtitle")] public string AmdSubtitle { get; set; }
 }
