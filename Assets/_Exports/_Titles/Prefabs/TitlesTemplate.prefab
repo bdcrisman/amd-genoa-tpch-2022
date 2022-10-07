@@ -600,6 +600,7 @@ MonoBehaviour:
   _compSubtitle: {fileID: 1381101444687007437}
   _amdTitle: {fileID: 1381101444693141972}
   _amdSubtitle: {fileID: 1381101445223427677}
+  _disclaimer: {fileID: 1616915924687603947}
 --- !u!1 &1381101445128546071
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,13 +10,14 @@ public class TitlesPanel : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI _compSubtitle;
     [SerializeField] private TextMeshProUGUI _amdTitle;
     [SerializeField] private TextMeshProUGUI _amdSubtitle;
+    [SerializeField] private TextMeshProUGUI _disclaimer;
 
     private void OnEnable() {
         Setup();
     }
 
     private void Setup() {
-        _mainTitle.text = _compTitle.text = _compSubtitle.text = _amdTitle.text = _amdSubtitle.text = string.Empty;
+        _mainTitle.text = _compTitle.text = _compSubtitle.text = _amdTitle.text = _amdSubtitle.text = _disclaimer.text = string.Empty;
 
         var t = LoadTitlesFromDisk();
         if (t == null || !t.IsDisplay) return;
@@ -26,6 +27,7 @@ public class TitlesPanel : MonoBehaviour {
         _compSubtitle.text = t.CompSubtitle;
         _amdTitle.text = t.AmdTitle;
         _amdSubtitle.text = t.AmdSubtitle;
+        _disclaimer.text = t.Disclaimer;
     }
 
     private TitlesDataModel LoadTitlesFromDisk() {
@@ -45,4 +47,5 @@ public class TitlesDataModel {
     [JsonProperty("compSubtitle")] public string CompSubtitle { get; set; }
     [JsonProperty("amd")] public string AmdTitle { get; set; }
     [JsonProperty("amdSubtitle")] public string AmdSubtitle { get; set; }
+    [JsonProperty("disclaimer")] public string Disclaimer { get; set; }
 }
