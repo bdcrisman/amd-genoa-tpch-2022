@@ -450,6 +450,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TitlesTemplate
       objectReference: {fileID: 0}
+    - target: {fileID: 1616915924687603947, guid: 029c56e96b3949a4d8335560d8999253, type: 3}
+      propertyPath: m_text
+      value: what
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 029c56e96b3949a4d8335560d8999253, type: 3}
 --- !u!1 &396497789
