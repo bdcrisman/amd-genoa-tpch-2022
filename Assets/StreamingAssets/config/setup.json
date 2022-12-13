@@ -2,7 +2,7 @@
     "durationSec": 10,
     "delta": 3.2,
     "deltaUnits": "x",
-    "displayHero": true,
+    "displayHero": false,
     "heroMessage": "the VM throughput, meeting QoS",
     "vmCountLabel": "VMs Deployed",
     "tileCountLabel": "Tiles",
