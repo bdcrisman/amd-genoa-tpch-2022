@@ -1,45 +1,5 @@
 {
     "durationSec": 10,
     "delta": 3.2,
-    "deltaUnits": "x",
-    "displayHero": false,
-    "heroMessage": "the VM throughput, meeting QoS",
-    "vmCountLabel": "VMs Deployed",
-    "tileCountLabel": "Tiles",
-    "scoreLabel": "Score",
-    "qosLabel": "-- QoS --",
-    "qosExceededDelaySec": 3,
-
-    "workloads": [
-        {
-            "label": "Web Static",
-            "vmCount": 8
-        },
-        {
-            "label": "Web Elastic",
-            "vmCount": 6
-        },
-        {
-            "label": "E-Commerce",
-            "vmCount": 4
-        },
-        {
-            "label": "Idle",
-            "vmCount": 1
-        }
-    ],
-
-    "compPanels": [
-        {
-            "score": 13.95,
-            "maxTiles": 14,
-            "finalQoS": 0.85
-        },
-
-        {
-            "score": 44,
-            "maxTiles": 45,
-            "finalQoS": 0.85
-        }
-    ]
+    "deltaUnits": "x"
 }
