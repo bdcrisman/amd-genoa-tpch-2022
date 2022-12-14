@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DemoManager : MonoBehaviour {
@@ -8,6 +6,7 @@ public class DemoManager : MonoBehaviour {
     private bool _isRunning;
 
     [SerializeField] private ConfigManager _configManager;
+    [SerializeField] private AnimManager _animManager;
 
     private void OnEnable() {
         _configManager.AllLoaded += OnAllConfigLoaded;
@@ -17,8 +16,7 @@ public class DemoManager : MonoBehaviour {
         _configManager.AllLoaded -= OnAllConfigLoaded;
     }
 
-    // Update is called once per frame
-    void Update() {
+    private void Update() {
         if (Input.GetKeyUp(KeyCode.F5)) {
             UnityEngine.SceneManagement.SceneManager.LoadScene(0);
             return;
@@ -31,7 +29,7 @@ public class DemoManager : MonoBehaviour {
     }
 
     private void RunDemo() {
-
+        _animManager.RunDemo();
     }
 
     private void OnAllConfigLoaded(object sender, EventArgs e) {
@@ -40,6 +38,9 @@ public class DemoManager : MonoBehaviour {
     }
 
     private void SetupDemo() {
-        print("totes");
+        _animManager.Setup(
+            _configManager.SetupConfig,
+            _configManager.AmdData,
+            _configManager.CompData);
     }
 }
