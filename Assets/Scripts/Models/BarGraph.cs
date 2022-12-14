@@ -7,7 +7,7 @@ public class BarGraph : MonoBehaviour {
 
     private Transform _transform;
     private Vector3 _maxScale;
-    private float _rawValue;
+    private float _rawDataValue;
     private float _riseDuration;
     private bool _isRunning;
 
@@ -15,8 +15,8 @@ public class BarGraph : MonoBehaviour {
         _transform = transform;    
     }
 
-    public void Setup(float rawValue, float maxHeightRatio, float riseDuration) {
-        _rawValue = rawValue;
+    public void Setup(float rawDataValue, float maxHeightRatio, float riseDuration) {
+        _rawDataValue = rawDataValue;
         _riseDuration = riseDuration;
 
         SetupMaxScale(maxHeightRatio);
@@ -36,14 +36,13 @@ public class BarGraph : MonoBehaviour {
         while (t < _riseDuration) {
             var speed = t / _riseDuration;
             OnScaleUpdated(Vector3.Lerp(beginScale, _maxScale, speed));
-            OnRawValueUpdated(Mathf.Lerp(0, _rawValue, speed));
+            OnRawValueUpdated(Mathf.Lerp(0, _rawDataValue, speed));
             t += Time.deltaTime;
             yield return null;
         }
 
-
-        _transform.localScale = _maxScale;
-        OnRawValueUpdated(_rawValue);
+        OnScaleUpdated(_maxScale);
+        OnRawValueUpdated(_rawDataValue);
     }
 
     private void SetupMaxScale(float maxHeightRatio) {

@@ -17,11 +17,13 @@ public class DemoManager : MonoBehaviour {
     }
 
     private void Update() {
+        // reset
         if (Input.GetKeyUp(KeyCode.F5)) {
             UnityEngine.SceneManagement.SceneManager.LoadScene(0);
             return;
         }
 
+        // run
         if (_canRun && !_isRunning && Input.GetKeyUp(KeyCode.Space) ) {
             _isRunning = true;
             RunDemo();
@@ -32,15 +34,15 @@ public class DemoManager : MonoBehaviour {
         _animManager.RunDemo();
     }
 
-    private void OnAllConfigLoaded(object sender, EventArgs e) {
-        SetupDemo();
-        _canRun = true;
-    }
-
     private void SetupDemo() {
         _animManager.Setup(
             _configManager.SetupConfig,
             _configManager.AmdData,
             _configManager.CompData);
+    }
+
+    private void OnAllConfigLoaded(object sender, EventArgs e) {
+        SetupDemo();
+        _canRun = true;
     }
 }
