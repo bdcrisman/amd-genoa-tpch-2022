@@ -30,6 +30,8 @@ public class BarGraph : MonoBehaviour {
     }
 
     private IEnumerator RiseOverTimeCo() {
+        print($"{transform.name}: {_riseDuration}");
+
         var t = 0f;
         var beginScale = _transform.localScale;
 

@@ -35,21 +35,17 @@ public class AnimPanel : MonoBehaviour {
 
     private void InitGraphs() {
         _graphs = _graphsParent.GetComponentsInChildren<BarGraph>().ToList();
-
+        
         var maxDuration = _data.Durations.Max();
         var maxQPH = _data.QueriesPerHour.Max();
         var min = Mathf.Min(_data.Durations.Count, _graphs.Count);
 
         for (var i = 0; i < min; ++i) {
-            var g = _graphs[i];
-            var qph = _data.QueriesPerHour[i];
+            var q = _data.QueriesPerHour[i];
             var t = _data.Durations[i];
-            
+            var g = _graphs[i];
             g.RawValueUpdated += (s, e) => OnGraphRawValueUpdated(g, e);
-            g.Setup(
-                qph,
-                qph / maxQPH,
-                t / maxDuration * _totalDurationSec);
+            g.Setup(q, q / maxQPH, t / maxDuration * _totalDurationSec);
         }
     }
 
