@@ -2,5 +2,7 @@
     "durationSec": 10,
     "delta": 3.2,
     "deltaUnits": "x",
-    "scoreLabel": "Queries/hour"
+    "scoreLabel": "Queries/hour",
+    "amdFinalDataValue": 1469.03,
+    "compFinalDataValue": 587.515
 }
