@@ -6,6 +6,7 @@ public class BarGraph : MonoBehaviour {
     public EventHandler<float> RawValueUpdated;
 
     private Transform _transform;
+    private Transform _dataStreamParent;
     private Vector3 _maxScale;
     private float _rawDataValue;
     private float _riseDuration;
@@ -16,10 +17,11 @@ public class BarGraph : MonoBehaviour {
         _transform = transform;    
     }
 
-    public void Setup(bool isAMD, float rawDataValue, float maxHeightRatio, float riseDuration) {
+    public void Setup(bool isAMD, float rawDataValue, float maxHeightRatio, float riseDuration, Transform dataStreamParent) {
         _isAMD = isAMD;
         _rawDataValue = rawDataValue;
         _riseDuration = riseDuration;
+        _dataStreamParent = dataStreamParent;
 
         SetupMaxScale(maxHeightRatio);
         InitScale();
@@ -45,6 +47,8 @@ public class BarGraph : MonoBehaviour {
 
         OnScaleUpdated(_maxScale);
         OnRawValueUpdated(_rawDataValue);
+
+        _isRunning = false;
     }
 
     private void SetupMaxScale(float maxHeightRatio) {

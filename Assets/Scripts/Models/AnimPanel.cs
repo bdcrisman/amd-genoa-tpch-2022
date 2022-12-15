@@ -8,6 +8,7 @@ public class AnimPanel : MonoBehaviour {
 
     [SerializeField] private ScorePanel _scorePanel;
     [SerializeField] private Transform _graphsParent;
+    [SerializeField] private Transform _dataStreamParent;
 
     private Dictionary<BarGraph, float> _graphsMap = new();
     private List<BarGraph> _graphs;
@@ -36,7 +37,6 @@ public class AnimPanel : MonoBehaviour {
 
     private void InitGraphs() {
         _graphs = _graphsParent.GetComponentsInChildren<BarGraph>().ToList();
-        print($"{_isAMD}: {_graphs.Count}: {_data.Durations.Count}");
         
         var maxDuration = _data.Durations.Max();
         var maxQPH = _data.QueriesPerHour.Max();
@@ -47,7 +47,7 @@ public class AnimPanel : MonoBehaviour {
             var t = _data.Durations[i];
             var g = _graphs[i];
             g.RawValueUpdated += (s, e) => OnGraphRawValueUpdated(g, e);
-            g.Setup(_isAMD, q, q / maxQPH, t / maxDuration * _totalDurationSec);
+            g.Setup(_isAMD, q, q / maxQPH, t / maxDuration * _totalDurationSec, _dataStreamParent);
         }
     }
 
