@@ -1,8 +1,8 @@
 using UnityEngine;
 
 public class AnimManager : MonoBehaviour {
-    [SerializeField] private AnimPanel _amdAnimPanel;
     [SerializeField] private AnimPanel _compAnimPanel;
+    [SerializeField] private AnimPanel _amdAnimPanel;
 
     public void Setup(SetupConfigModel setup, DataModel amdData, DataModel compData) {
         _amdAnimPanel.Setup(true, setup, amdData);

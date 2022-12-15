@@ -10,12 +10,14 @@ public class BarGraph : MonoBehaviour {
     private float _rawDataValue;
     private float _riseDuration;
     private bool _isRunning;
+    private bool _isAMD;
 
     private void Awake() {
         _transform = transform;    
     }
 
-    public void Setup(float rawDataValue, float maxHeightRatio, float riseDuration) {
+    public void Setup(bool isAMD, float rawDataValue, float maxHeightRatio, float riseDuration) {
+        _isAMD = isAMD;
         _rawDataValue = rawDataValue;
         _riseDuration = riseDuration;
 
@@ -30,8 +32,6 @@ public class BarGraph : MonoBehaviour {
     }
 
     private IEnumerator RiseOverTimeCo() {
-        print($"{transform.name}: {_riseDuration}");
-
         var t = 0f;
         var beginScale = _transform.localScale;
 

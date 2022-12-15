@@ -13,11 +13,11 @@ public class AnimPanel : MonoBehaviour {
     private List<BarGraph> _graphs;
     private DataModel _data;
     private float _totalDurationSec;
-    private bool _isAmd;
+    private bool _isAMD;
     private bool _isRunning;
 
     public void Setup(bool isAmd, SetupConfigModel setup, DataModel data) {
-        _isAmd = isAmd;
+        _isAMD = isAmd;
         _data = data;
         _totalDurationSec = setup.DurationSec;
 
@@ -36,6 +36,7 @@ public class AnimPanel : MonoBehaviour {
 
     private void InitGraphs() {
         _graphs = _graphsParent.GetComponentsInChildren<BarGraph>().ToList();
+        print($"{_isAMD}: {_graphs.Count}: {_data.Durations.Count}");
         
         var maxDuration = _data.Durations.Max();
         var maxQPH = _data.QueriesPerHour.Max();
@@ -46,7 +47,7 @@ public class AnimPanel : MonoBehaviour {
             var t = _data.Durations[i];
             var g = _graphs[i];
             g.RawValueUpdated += (s, e) => OnGraphRawValueUpdated(g, e);
-            g.Setup(q, q / maxQPH, t / maxDuration * _totalDurationSec);
+            g.Setup(_isAMD, q, q / maxQPH, t / maxDuration * _totalDurationSec);
         }
     }
 
