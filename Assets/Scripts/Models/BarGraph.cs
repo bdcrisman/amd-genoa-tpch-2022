@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
+[DisallowMultipleComponent]
 public class BarGraph : MonoBehaviour {
     public EventHandler<float> RawValueUpdated;
     public EventHandler Finished;
@@ -12,8 +13,9 @@ public class BarGraph : MonoBehaviour {
 
     const float _minY = -4.88f;
 
+    private DataStream _dataStream;
     private Transform _transform;
-    private Transform _dataStreamParent;
+    private Vector3 _dataStreamDest;
     private Vector3 _maxScale;
     private Vector3 _maxPos;
     private float _rawDataValue;
@@ -23,32 +25,18 @@ public class BarGraph : MonoBehaviour {
 
     private void Awake() {
         _transform = transform;
+        _dataStream = GetComponent<DataStream>();
     }
-
-    //float _time = 0f;
-    //float _max = 0.5f;
-    //private void Update() {
-    //    if (!_isRunning) {
-    //        return;
-    //    }
-
-    //    if ((_time += Time.deltaTime) < _max) return;
-    //    _time = 0f;
-
-    //    var go = Instantiate(GameObject.CreatePrimitive(PrimitiveType.Sphere), _dataStreamParent);
-    //    go.layer = gameObject.layer;
-    //    go.transform.position = _transform.GetChild(0).position;
-    //}
 
     public Vector3 GetTopWorldPos() {
         return _transform.GetChild(0).position;
     }
 
-    public void Setup(bool isAMD, float rawDataValue, float maxHeightRatio, float riseDuration, Transform dataStreamParent) {
+    public void Setup(bool isAMD, float rawDataValue, float maxHeightRatio, float riseDuration, GameObject dataStreamPrefab, Transform dataStreamParent, Vector3 dataStreamDest) {
         _isAMD = isAMD;
         _rawDataValue = rawDataValue;
         _riseDuration = riseDuration;
-        _dataStreamParent = dataStreamParent;
+        _dataStream.Setup(dataStreamPrefab, dataStreamParent, dataStreamDest);
 
         SetupMaxYPos(maxHeightRatio);
         InitPos();
@@ -60,6 +48,15 @@ public class BarGraph : MonoBehaviour {
         if (_isRunning) return;
         _isRunning = true;
         StartCoroutine(RiseOverTimeCo());
+        StartCoroutine(RunDataStreamsCo());
+    }
+
+    private IEnumerator RunDataStreamsCo() {
+        var wait = new WaitForSeconds(_isAMD ? 0.25f : 0.75f);
+        while (_isRunning) {
+            _dataStream.CreateDataStream(_transform.GetChild(0).position);
+            yield return wait;
+        }
     }
 
     private IEnumerator RiseOverTimeCo() {

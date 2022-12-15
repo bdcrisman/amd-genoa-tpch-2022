@@ -11,6 +11,7 @@ public class AnimPanel : MonoBehaviour {
     [SerializeField] private Transform _graphsParent;
     [SerializeField] private Transform _dataStreamParent;
     [SerializeField] private Transform _dataStreamDest;
+    [SerializeField] private GameObject _dataStreamPrefab;
 
     private Dictionary<BarGraph, float> _graphsMap = new();
     private List<BarGraph> _graphs;
@@ -37,12 +38,12 @@ public class AnimPanel : MonoBehaviour {
             g.RiseOverTime();
         }
 
-        StartCoroutine(DataStreamsCo());
+        //StartCoroutine(DataStreamsCo());
     }
 
     private void InitGraphs() {
         _graphs = _graphsParent.GetComponentsInChildren<BarGraph>().ToList();
-        
+
         var maxDuration = _data.Durations.Max();
         var maxQPH = _data.QueriesPerHour.Max();
         var min = Mathf.Min(_data.Durations.Count, _graphs.Count);
@@ -53,7 +54,7 @@ public class AnimPanel : MonoBehaviour {
             var g = _graphs[i];
             g.Finished += OnGraphFinishedRising;
             g.RawValueUpdated += (s, e) => OnGraphRawValueUpdated(g, e);
-            g.Setup(_isAMD, q, q / maxQPH, t / maxDuration * _totalDurationSec, _dataStreamParent);
+            g.Setup(_isAMD, q, q / maxQPH, t / maxDuration * _totalDurationSec, _dataStreamPrefab, _dataStreamParent, _dataStreamDest.position);
         }
     }
 
@@ -67,13 +68,12 @@ public class AnimPanel : MonoBehaviour {
     }
 
     private IEnumerator DataStreamsCo() {
-
-
+        var wait = new WaitForSeconds(0.05f);
         while (_isRunning && _graphs.Count > _finishedCount) {
             foreach (var g in _graphs) {
                 if (!g.IsRunning) continue;
                 CreateDataStream(g.GetTopWorldPos(), _dataStreamDest.position);
-                yield return new WaitForSeconds(_isAMD ? 0.2f : 0.5f);
+                yield return wait; // new WaitForSeconds(_isAMD ? 0.1f : 0.5f);
             }
 
             yield return null;
@@ -81,9 +81,8 @@ public class AnimPanel : MonoBehaviour {
     }
 
     private void CreateDataStream(Vector3 src, Vector3 dest) {
-        var go = Instantiate(GameObject.CreatePrimitive(PrimitiveType.Sphere), _dataStreamParent);
+        var go = Instantiate(_dataStreamPrefab, _dataStreamParent);
         go.layer = gameObject.layer;
-        go.transform.localScale *= 0.5f;
         StartCoroutine(InterpolateDataStreamCo(go.transform, src, dest));
     }
 
@@ -92,23 +91,22 @@ public class AnimPanel : MonoBehaviour {
         var duration = 0.25f;
 
         var center = (src + dest) * 0.5f;
-        center += new Vector3(0, 1, 0);
+        center -= new Vector3(0, 5, 0);
 
-        src += center;
-        dest += center;
-
+        var selSrc = src - center;
+        var selDest = dest - center;
 
         while (t < duration) {
-            dataStream.position = Vector3.Slerp(src, dest, t / duration);
-            dataStream.position -= center;
+            dataStream.position = Vector3.Slerp(selSrc, selDest, t / duration);
+            dataStream.position += center;
             t += Time.deltaTime;
             yield return null;
         }
 
         t = 0f;
         while (t < duration) {
-            dataStream.position = Vector3.Slerp(dest, src, t / duration);
-            dataStream.position -= center;
+            dataStream.position = Vector3.Slerp(selDest, selSrc, t / duration);
+            dataStream.position += center;
             t += Time.deltaTime;
             yield return null;
         }
