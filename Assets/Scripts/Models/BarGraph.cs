@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class BarGraph : MonoBehaviour {
     public EventHandler<float> RawValueUpdated;
+    public EventHandler Finished;
+
+    public bool IsRunning { get => _isRunning; }
+
+    [SerializeField] private bool _canPrint;
 
     const float _minY = -4.88f;
 
@@ -17,7 +22,26 @@ public class BarGraph : MonoBehaviour {
     private bool _isAMD;
 
     private void Awake() {
-        _transform = transform;    
+        _transform = transform;
+    }
+
+    //float _time = 0f;
+    //float _max = 0.5f;
+    //private void Update() {
+    //    if (!_isRunning) {
+    //        return;
+    //    }
+
+    //    if ((_time += Time.deltaTime) < _max) return;
+    //    _time = 0f;
+
+    //    var go = Instantiate(GameObject.CreatePrimitive(PrimitiveType.Sphere), _dataStreamParent);
+    //    go.layer = gameObject.layer;
+    //    go.transform.position = _transform.GetChild(0).position;
+    //}
+
+    public Vector3 GetTopWorldPos() {
+        return _transform.GetChild(0).position;
     }
 
     public void Setup(bool isAMD, float rawDataValue, float maxHeightRatio, float riseDuration, Transform dataStreamParent) {
@@ -56,6 +80,7 @@ public class BarGraph : MonoBehaviour {
         OnPositionUpdated(_maxPos);
         OnRawValueUpdated(_rawDataValue);
 
+        Finished?.Invoke(this, EventArgs.Empty);
         _isRunning = false;
     }
 
