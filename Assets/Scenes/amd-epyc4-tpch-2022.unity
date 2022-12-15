@@ -1166,6 +1166,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 4505156827090827613, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 4702609886416095453, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
       propertyPath: m_Name
       value: 3DAnimPanel (1)
@@ -1429,6 +1433,10 @@ PrefabInstance:
     - target: {fileID: 8556452805293816116, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8568290067866170712, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.05
       objectReference: {fileID: 0}
     - target: {fileID: 8687856094664093961, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
       propertyPath: m_Layer
