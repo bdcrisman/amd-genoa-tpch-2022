@@ -5,9 +5,12 @@ using UnityEngine;
 public class BarGraph : MonoBehaviour {
     public EventHandler<float> RawValueUpdated;
 
+    const float _minY = -4.88f;
+
     private Transform _transform;
     private Transform _dataStreamParent;
     private Vector3 _maxScale;
+    private Vector3 _maxPos;
     private float _rawDataValue;
     private float _riseDuration;
     private bool _isRunning;
@@ -23,8 +26,10 @@ public class BarGraph : MonoBehaviour {
         _riseDuration = riseDuration;
         _dataStreamParent = dataStreamParent;
 
-        SetupMaxScale(maxHeightRatio);
-        InitScale();
+        SetupMaxYPos(maxHeightRatio);
+        InitPos();
+        //SetupMaxScale(maxHeightRatio);
+        //InitScale();
     }
 
     public void RiseOverTime() {
@@ -35,20 +40,29 @@ public class BarGraph : MonoBehaviour {
 
     private IEnumerator RiseOverTimeCo() {
         var t = 0f;
+        var beginPos = _transform.localPosition;
         var beginScale = _transform.localScale;
 
         while (t < _riseDuration) {
             var speed = t / _riseDuration;
-            OnScaleUpdated(Vector3.Lerp(beginScale, _maxScale, speed));
+            OnPositionUpdated(Vector3.Lerp(beginPos, _maxPos, speed));
+            //OnScaleUpdated(Vector3.Lerp(beginScale, _maxScale, speed));
             OnRawValueUpdated(Mathf.Lerp(0, _rawDataValue, speed));
             t += Time.deltaTime;
             yield return null;
         }
 
-        OnScaleUpdated(_maxScale);
+        //OnScaleUpdated(_maxScale);
+        OnPositionUpdated(_maxPos);
         OnRawValueUpdated(_rawDataValue);
 
         _isRunning = false;
+    }
+
+    private void SetupMaxYPos(float maxHeightRatio) {
+        _maxPos = _transform.localPosition;
+        _maxPos.y = _minY + Mathf.Abs(_minY * maxHeightRatio);
+        //print($"{_minY} * {maxHeightRatio} - {_minY} = {(_minY * maxHeightRatio) - _minY}");
     }
 
     private void SetupMaxScale(float maxHeightRatio) {
@@ -56,10 +70,20 @@ public class BarGraph : MonoBehaviour {
         _maxScale.z = _transform.localScale.z * maxHeightRatio;
     }
 
+    private void InitPos() {
+        var pos = _transform.localPosition;
+        pos.y = _minY;
+        _transform.localPosition = pos;
+    }
+
     private void InitScale() {
         var scale = _transform.localScale;
         scale.z = 0f;
         _transform.localScale = scale;
+    }
+
+    private void OnPositionUpdated(Vector3 pos) {
+        _transform.localPosition = pos;
     }
 
     private void OnScaleUpdated(Vector3 scale) {
