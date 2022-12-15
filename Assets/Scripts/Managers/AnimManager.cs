@@ -5,8 +5,8 @@ public class AnimManager : MonoBehaviour {
     [SerializeField] private AnimPanel _compAnimPanel;
 
     public void Setup(SetupConfigModel setup, DataModel amdData, DataModel compData) {
-        _amdAnimPanel.Setup(true, amdData, setup.DurationSec);
-        _compAnimPanel.Setup(false, compData, setup.DurationSec);
+        _amdAnimPanel.Setup(true, setup, amdData);
+        _compAnimPanel.Setup(false, setup, compData);
     }
 
     public void RunDemo() {

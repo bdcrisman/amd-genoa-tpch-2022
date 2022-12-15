@@ -1,5 +1,6 @@
 {
     "durationSec": 10,
     "delta": 3.2,
-    "deltaUnits": "x"
+    "deltaUnits": "x",
+    "scoreLabel": "Queries/hour"
 }

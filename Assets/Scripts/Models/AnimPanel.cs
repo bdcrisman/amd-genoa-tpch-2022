@@ -16,11 +16,12 @@ public class AnimPanel : MonoBehaviour {
     private bool _isAmd;
     private bool _isRunning;
 
-    public void Setup(bool isAmd, DataModel data, float totalDurationSec) {
+    public void Setup(bool isAmd, SetupConfigModel setup, DataModel data) {
         _isAmd = isAmd;
         _data = data;
-        _totalDurationSec = totalDurationSec;
+        _totalDurationSec = setup.DurationSec;
 
+        _scorePanel.Setup(setup.ScoreLabel);
         InitGraphs();
     }
 
