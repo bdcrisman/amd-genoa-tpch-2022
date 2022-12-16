@@ -4,6 +4,9 @@ using UnityEngine;
 
 [DisallowMultipleComponent]
 public class BarGraph : MonoBehaviour {
+    const float BaseDelay = 0.5f;
+    const float MinY = -4.88f;
+
     public EventHandler<float> RawValueUpdated;
     public EventHandler Finished;
 
@@ -11,15 +14,13 @@ public class BarGraph : MonoBehaviour {
 
     [SerializeField] private bool _canPrint;
 
-    const float _minY = -4.88f;
-
     private DataStream _dataStream;
     private Transform _transform;
-    private Vector3 _dataStreamDest;
     private Vector3 _maxScale;
     private Vector3 _maxPos;
     private float _rawDataValue;
     private float _riseDuration;
+    private float _delta;
     private bool _isRunning;
     private bool _isAMD;
 
@@ -28,20 +29,16 @@ public class BarGraph : MonoBehaviour {
         _dataStream = GetComponent<DataStream>();
     }
 
-    public Vector3 GetTopWorldPos() {
-        return _transform.GetChild(0).position;
-    }
-
-    public void Setup(bool isAMD, float rawDataValue, float maxHeightRatio, float riseDuration, GameObject dataStreamPrefab, Transform dataStreamParent, Vector3 dataStreamDest) {
+    public void Setup(bool isAMD, float rawDataValue, float maxHeightRatio, float riseDuration, float delta, GameObject dataStreamPrefab, Transform dataStreamParent, Vector3 dataStreamDest) {
         _isAMD = isAMD;
         _rawDataValue = rawDataValue;
         _riseDuration = riseDuration;
+        _delta = delta;
         _dataStream.Setup(dataStreamPrefab, dataStreamParent, dataStreamDest);
+
 
         SetupMaxYPos(maxHeightRatio);
         InitPos();
-        //SetupMaxScale(maxHeightRatio);
-        //InitScale();
     }
 
     public void RiseOverTime() {
@@ -52,7 +49,7 @@ public class BarGraph : MonoBehaviour {
     }
 
     private IEnumerator RunDataStreamsCo() {
-        var wait = new WaitForSeconds(_isAMD ? 0.25f : 0.75f);
+        var wait = new WaitForSeconds(_isAMD ? BaseDelay / _delta : BaseDelay);
         while (_isRunning) {
             _dataStream.CreateDataStream(_transform.GetChild(0).position);
             yield return wait;
@@ -67,13 +64,11 @@ public class BarGraph : MonoBehaviour {
         while (t < _riseDuration) {
             var speed = t / _riseDuration;
             OnPositionUpdated(Vector3.Lerp(beginPos, _maxPos, speed));
-            //OnScaleUpdated(Vector3.Lerp(beginScale, _maxScale, speed));
             OnRawValueUpdated(Mathf.Lerp(0, _rawDataValue, speed));
             t += Time.deltaTime;
             yield return null;
         }
 
-        //OnScaleUpdated(_maxScale);
         OnPositionUpdated(_maxPos);
         OnRawValueUpdated(_rawDataValue);
 
@@ -83,33 +78,17 @@ public class BarGraph : MonoBehaviour {
 
     private void SetupMaxYPos(float maxHeightRatio) {
         _maxPos = _transform.localPosition;
-        _maxPos.y = _minY + Mathf.Abs(_minY * maxHeightRatio);
-        //print($"{_minY} * {maxHeightRatio} - {_minY} = {(_minY * maxHeightRatio) - _minY}");
-    }
-
-    private void SetupMaxScale(float maxHeightRatio) {
-        _maxScale = _transform.localScale;
-        _maxScale.z = _transform.localScale.z * maxHeightRatio;
+        _maxPos.y = MinY + Mathf.Abs(MinY * maxHeightRatio);
     }
 
     private void InitPos() {
         var pos = _transform.localPosition;
-        pos.y = _minY;
+        pos.y = MinY;
         _transform.localPosition = pos;
-    }
-
-    private void InitScale() {
-        var scale = _transform.localScale;
-        scale.z = 0f;
-        _transform.localScale = scale;
     }
 
     private void OnPositionUpdated(Vector3 pos) {
         _transform.localPosition = pos;
-    }
-
-    private void OnScaleUpdated(Vector3 scale) {
-        _transform.localScale = scale;
     }
 
     private void OnRawValueUpdated(float val) {

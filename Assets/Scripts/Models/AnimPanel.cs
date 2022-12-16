@@ -17,17 +17,18 @@ public class AnimPanel : MonoBehaviour {
     private List<BarGraph> _graphs;
     private DataModel _data;
     private float _totalDurationSec;
+    private float _finalScore;
     private bool _isAMD;
     private bool _isRunning;
-    private int _finishedCount;
 
     public void Setup(bool isAmd, SetupConfigModel setup, DataModel data) {
         _isAMD = isAmd;
         _data = data;
         _totalDurationSec = setup.DurationSec;
+        _finalScore = isAmd ? setup.AmdFinalDataValue : setup.CompFinalDataValue;
 
         _scorePanel.Setup(setup.ScoreLabel);
-        InitGraphs();
+        InitGraphs(setup.AmdFinalDataValue / setup.CompFinalDataValue);
     }
 
     public void RunDemo() {
@@ -38,10 +39,10 @@ public class AnimPanel : MonoBehaviour {
             g.RiseOverTime();
         }
 
-        //StartCoroutine(DataStreamsCo());
+        _scorePanel.IncrementOverTime(_totalDurationSec, _finalScore);
     }
 
-    private void InitGraphs() {
+    private void InitGraphs(float delta) {
         _graphs = _graphsParent.GetComponentsInChildren<BarGraph>().ToList();
 
         var maxDuration = _data.Durations.Max();
@@ -52,65 +53,15 @@ public class AnimPanel : MonoBehaviour {
             var q = _data.QueriesPerHour[i];
             var t = _data.Durations[i];
             var g = _graphs[i];
-            g.Finished += OnGraphFinishedRising;
             g.RawValueUpdated += (s, e) => OnGraphRawValueUpdated(g, e);
-            g.Setup(_isAMD, q, q / maxQPH, t / maxDuration * _totalDurationSec, _dataStreamPrefab, _dataStreamParent, _dataStreamDest.position);
+            g.Setup(_isAMD, q, q / maxQPH, t / maxDuration * _totalDurationSec, delta, _dataStreamPrefab, _dataStreamParent, _dataStreamDest.position);
         }
-    }
-
-    private void OnGraphFinishedRising(object sender, EventArgs e) {
-        ++_finishedCount;
     }
 
     private void OnGraphRawValueUpdated(BarGraph g, float val) {
+        return;
+
         _graphsMap[g] = val;
         _scorePanel.UpdateScore(_graphsMap.Sum(x => x.Value));
-    }
-
-    private IEnumerator DataStreamsCo() {
-        var wait = new WaitForSeconds(0.05f);
-        while (_isRunning && _graphs.Count > _finishedCount) {
-            foreach (var g in _graphs) {
-                if (!g.IsRunning) continue;
-                CreateDataStream(g.GetTopWorldPos(), _dataStreamDest.position);
-                yield return wait; // new WaitForSeconds(_isAMD ? 0.1f : 0.5f);
-            }
-
-            yield return null;
-        }
-    }
-
-    private void CreateDataStream(Vector3 src, Vector3 dest) {
-        var go = Instantiate(_dataStreamPrefab, _dataStreamParent);
-        go.layer = gameObject.layer;
-        StartCoroutine(InterpolateDataStreamCo(go.transform, src, dest));
-    }
-
-    private IEnumerator InterpolateDataStreamCo(Transform dataStream, Vector3 src, Vector3 dest) {
-        var t = 0f;
-        var duration = 0.25f;
-
-        var center = (src + dest) * 0.5f;
-        center -= new Vector3(0, 5, 0);
-
-        var selSrc = src - center;
-        var selDest = dest - center;
-
-        while (t < duration) {
-            dataStream.position = Vector3.Slerp(selSrc, selDest, t / duration);
-            dataStream.position += center;
-            t += Time.deltaTime;
-            yield return null;
-        }
-
-        t = 0f;
-        while (t < duration) {
-            dataStream.position = Vector3.Slerp(selDest, selSrc, t / duration);
-            dataStream.position += center;
-            t += Time.deltaTime;
-            yield return null;
-        }
-
-        Destroy(dataStream.gameObject);
     }
 }
