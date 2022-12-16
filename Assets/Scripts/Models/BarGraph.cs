@@ -2,68 +2,93 @@ using System;
 using System.Collections;
 using UnityEngine;
 
+[DisallowMultipleComponent]
 public class BarGraph : MonoBehaviour {
-    public EventHandler<float> RawValueUpdated;
+    const float BaseDelay = 0.5f;
+    const float MinY = -4.88f;
 
+    public EventHandler<float> RawValueUpdated;
+    public EventHandler Finished;
+
+    public bool IsRunning { get => _isRunning; }
+
+    [SerializeField] private bool _canPrint;
+
+    private DataStream _dataStream;
     private Transform _transform;
-    private Transform _dataStreamParent;
     private Vector3 _maxScale;
+    private Vector3 _maxPos;
     private float _rawDataValue;
     private float _riseDuration;
+    private float _delta;
     private bool _isRunning;
     private bool _isAMD;
 
     private void Awake() {
-        _transform = transform;    
+        _transform = transform;
+        _dataStream = GetComponent<DataStream>();
     }
 
-    public void Setup(bool isAMD, float rawDataValue, float maxHeightRatio, float riseDuration, Transform dataStreamParent) {
+    public void Setup(bool isAMD, float rawDataValue, float maxHeightRatio, float riseDuration, float delta, GameObject dataStreamPrefab, Transform dataStreamParent, Vector3 dataStreamDest) {
         _isAMD = isAMD;
         _rawDataValue = rawDataValue;
         _riseDuration = riseDuration;
-        _dataStreamParent = dataStreamParent;
+        _delta = delta;
+        _dataStream.Setup(dataStreamPrefab, dataStreamParent, dataStreamDest);
 
-        SetupMaxScale(maxHeightRatio);
-        InitScale();
+
+        SetupMaxYPos(maxHeightRatio);
+        InitPos();
     }
 
     public void RiseOverTime() {
         if (_isRunning) return;
         _isRunning = true;
         StartCoroutine(RiseOverTimeCo());
+        StartCoroutine(RunDataStreamsCo());
+    }
+
+    private IEnumerator RunDataStreamsCo() {
+        var wait = new WaitForSeconds(_isAMD ? BaseDelay / _delta : BaseDelay);
+        while (_isRunning) {
+            _dataStream.CreateDataStream(_transform.GetChild(0).position);
+            yield return wait;
+        }
     }
 
     private IEnumerator RiseOverTimeCo() {
         var t = 0f;
+        var beginPos = _transform.localPosition;
         var beginScale = _transform.localScale;
 
         while (t < _riseDuration) {
             var speed = t / _riseDuration;
-            OnScaleUpdated(Vector3.Lerp(beginScale, _maxScale, speed));
+            OnPositionUpdated(Vector3.Lerp(beginPos, _maxPos, speed));
             OnRawValueUpdated(Mathf.Lerp(0, _rawDataValue, speed));
             t += Time.deltaTime;
             yield return null;
         }
 
-        OnScaleUpdated(_maxScale);
+        OnPositionUpdated(_maxPos);
         OnRawValueUpdated(_rawDataValue);
 
+        Finished?.Invoke(this, EventArgs.Empty);
         _isRunning = false;
     }
 
-    private void SetupMaxScale(float maxHeightRatio) {
-        _maxScale = _transform.localScale;
-        _maxScale.z = _transform.localScale.z * maxHeightRatio;
+    private void SetupMaxYPos(float maxHeightRatio) {
+        _maxPos = _transform.localPosition;
+        _maxPos.y = MinY + Mathf.Abs(MinY * maxHeightRatio);
     }
 
-    private void InitScale() {
-        var scale = _transform.localScale;
-        scale.z = 0f;
-        _transform.localScale = scale;
+    private void InitPos() {
+        var pos = _transform.localPosition;
+        pos.y = MinY;
+        _transform.localPosition = pos;
     }
 
-    private void OnScaleUpdated(Vector3 scale) {
-        _transform.localScale = scale;
+    private void OnPositionUpdated(Vector3 pos) {
+        _transform.localPosition = pos;
     }
 
     private void OnRawValueUpdated(float val) {
