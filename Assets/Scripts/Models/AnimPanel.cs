@@ -13,6 +13,8 @@ public class AnimPanel : MonoBehaviour {
     [SerializeField] private Transform _dataStreamDest;
     [SerializeField] private GameObject _dataStreamPrefab;
 
+    [SerializeField] private DataStreamManager _dataStreamManager;
+
     private Dictionary<BarGraph, float> _graphsMap = new();
     private List<BarGraph> _graphs;
     private DataModel _data;
@@ -26,6 +28,8 @@ public class AnimPanel : MonoBehaviour {
         _data = data;
         _totalDurationSec = setup.DurationSec;
         _finalScore = isAmd ? setup.AmdFinalDataValue : setup.CompFinalDataValue;
+
+        _dataStreamManager.Setup(_isAMD ? 1 : setup.AmdFinalDataValue / setup.CompFinalDataValue);
 
         _scorePanel.Setup(setup.ScoreLabel);
         InitGraphs(setup.AmdFinalDataValue / setup.CompFinalDataValue);
