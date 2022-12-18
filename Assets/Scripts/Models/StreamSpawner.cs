@@ -30,12 +30,19 @@ public class StreamSpawner : MonoBehaviour {
         _isRunning = false;
     }
 
+    private bool _isFirst = true;
     private IEnumerator RunLoopCo() {
         while (_isRunning) {
+            if (_isProcessorSpawner && _isFirst) {
+                _isFirst = false;
+                yield return new WaitForSeconds(UnityEngine.Random.Range(0.1f, 1.5f));
+            }
+
             _canSpawn = false;
 
             var stream = Instantiate(_streamPrefab, transform);
             stream.layer = gameObject.layer;
+            stream.transform.position = _isProcessorSpawner ? transform.position : _paths[0].position;
             TraversePaths(new Hashtable { { "stream", stream }, { "index", 0 } });
 
             while(!_canSpawn) {
@@ -69,9 +76,9 @@ public class StreamSpawner : MonoBehaviour {
             Destroy(go);
             _canSpawn = true;
 
-            if (_isProcessorSpawner) {
+            //if (_isProcessorSpawner) {
                 Finished?.Invoke(this, EventArgs.Empty);
-            }
+            //}
         } catch { }
     }
 }

@@ -1,8 +1,11 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
 
 public class ScorePanel : MonoBehaviour {
+    public EventHandler Finished;
+
     [SerializeField] private TextMeshProUGUI _label;
     [SerializeField] private TextMeshProUGUI _value;
 
@@ -32,5 +35,10 @@ public class ScorePanel : MonoBehaviour {
         }
 
         UpdateScore(finalScore);
+        OnFinished();
+    }
+
+    private void OnFinished() {
+        Finished?.Invoke(this, EventArgs.Empty);
     }
 }

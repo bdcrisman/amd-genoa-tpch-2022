@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -24,6 +23,7 @@ public class DataStreamManager : MonoBehaviour {
     }
 
     private void OnDatabaseSpawnerFinished(bool isLeft) {
+        return;
         if (isLeft)
             _leftScoreStreamSpawner.Run();
         else
@@ -31,6 +31,7 @@ public class DataStreamManager : MonoBehaviour {
     }
 
     private void OnProcessorSpawnerFinished(bool isLeft) {
+        return;
         if (isLeft)
             _leftDatabaseStreamSpawner.Run();
         else
@@ -38,14 +39,17 @@ public class DataStreamManager : MonoBehaviour {
     }
 
     public void Setup(float delta) {
+        // get proc spawners
         _leftProcessorStreamSpawners = _leftProcessorStreamsParent.GetComponentsInChildren<StreamSpawner>().ToList();
         _rightProcessorStreamSpawners = _rightProcessorStreamsParent.GetComponentsInChildren<StreamSpawner>().ToList();
 
+        // events
         _leftProcessorStreamSpawners.ForEach(x => x.Finished += (s, e) => OnProcessorSpawnerFinished(true));
         _rightProcessorStreamSpawners.ForEach(x => x.Finished += (s, e) => OnProcessorSpawnerFinished(false));
         _leftDatabaseStreamSpawner.Finished += (s, e) => OnDatabaseSpawnerFinished(true);
         _rightDatabaseStreamSpawner.Finished += (s, e) => OnDatabaseSpawnerFinished(false);
 
+        // setup
         _leftProcessorStreamSpawners.ForEach(x => x.Setup(delta));
         _rightProcessorStreamSpawners.ForEach(x => x.Setup(delta));
         _leftDatabaseStreamSpawner.Setup(delta);
@@ -60,15 +64,22 @@ public class DataStreamManager : MonoBehaviour {
 
         _leftProcessorStreamSpawners.ForEach(x => x.Run());
         _rightProcessorStreamSpawners.ForEach(x => x.Run());
+
+        _leftDatabaseStreamSpawner.Run();
+        _rightDatabaseStreamSpawner.Run();
+
+        _leftScoreStreamSpawner.Run();
+        _rightScoreStreamSpawner.Run();
     }
 
     public void Stop() {
         _leftProcessorStreamSpawners.ForEach(x => x.Stop());
-        _leftDatabaseStreamSpawner.Stop();
-        _leftScoreStreamSpawner.Stop();
-
         _rightProcessorStreamSpawners.ForEach(x => x.Stop());
+        
+        _leftDatabaseStreamSpawner.Stop();
         _rightDatabaseStreamSpawner.Stop();
+        
+        _leftScoreStreamSpawner.Stop();
         _rightScoreStreamSpawner.Stop();
     }
 }

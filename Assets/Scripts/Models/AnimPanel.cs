@@ -23,6 +23,14 @@ public class AnimPanel : MonoBehaviour {
     private bool _isAMD;
     private bool _isRunning;
 
+    private void OnEnable() {
+        _scorePanel.Finished += OnScoreFinished;
+    }
+
+    private void OnDisable() {
+        _scorePanel.Finished -= OnScoreFinished;
+    }
+
     public void Setup(bool isAmd, SetupConfigModel setup, DataModel data) {
         _isAMD = isAmd;
         _data = data;
@@ -67,5 +75,9 @@ public class AnimPanel : MonoBehaviour {
 
         _graphsMap[g] = val;
         _scorePanel.UpdateScore(_graphsMap.Sum(x => x.Value));
+    }
+
+    private void OnScoreFinished(object sender, EventArgs e) {
+        _dataStreamManager.Stop();
     }
 }
