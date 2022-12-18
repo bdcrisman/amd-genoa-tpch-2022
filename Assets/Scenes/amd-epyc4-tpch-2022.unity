@@ -2393,10 +2393,22 @@ PrefabInstance:
       propertyPath: _streamPrefab
       value: 
       objectReference: {fileID: 1760722586425353290, guid: 4861620138cf01c4b9c7ad00704eaa64, type: 3}
+    - target: {fileID: 2755270926587170892, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
+      propertyPath: _streamPrefab
+      value: 
+      objectReference: {fileID: 1760722586425353290, guid: 98b127db227b666489f1af45cdea83f3, type: 3}
+    - target: {fileID: 2906301167770667722, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
+      propertyPath: _streamPrefab
+      value: 
+      objectReference: {fileID: 1760722586425353290, guid: 98b127db227b666489f1af45cdea83f3, type: 3}
     - target: {fileID: 4135229902122397215, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
       propertyPath: _streamPrefab
       value: 
       objectReference: {fileID: 1760722586425353290, guid: 4861620138cf01c4b9c7ad00704eaa64, type: 3}
+    - target: {fileID: 4577430830983850301, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
+      propertyPath: _streamPrefab
+      value: 
+      objectReference: {fileID: 1760722586425353290, guid: 98b127db227b666489f1af45cdea83f3, type: 3}
     - target: {fileID: 4600933126449198123, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
       propertyPath: _streamPrefab
       value: 
@@ -2417,6 +2429,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5080347109006272113, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
+      propertyPath: _streamPrefab
+      value: 
+      objectReference: {fileID: 1760722586425353290, guid: 98b127db227b666489f1af45cdea83f3, type: 3}
+    - target: {fileID: 5415136326417918332, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
+      propertyPath: _streamPrefab
+      value: 
+      objectReference: {fileID: 1760722586425353290, guid: 98b127db227b666489f1af45cdea83f3, type: 3}
     - target: {fileID: 5750467494123762875, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
       propertyPath: _graphsParent
       value: 
@@ -2473,6 +2493,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8406015456281439487, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
+      propertyPath: _streamPrefab
+      value: 
+      objectReference: {fileID: 1760722586425353290, guid: 98b127db227b666489f1af45cdea83f3, type: 3}
     - target: {fileID: 8461222521105685575, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
       propertyPath: _streamPrefab
       value: 

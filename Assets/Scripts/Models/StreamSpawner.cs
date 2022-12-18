@@ -11,8 +11,13 @@ public class StreamSpawner : MonoBehaviour {
     [SerializeField] private List<float> _pathTimes;
     [SerializeField] private GameObject _streamPrefab;
 
+    private float _trailTime;
     private bool _isRunning;
     private bool _canSpawn;
+
+    private void OnEnable() {
+        _trailTime = _streamPrefab.GetComponent<TrailRenderer>().time;
+    }
 
     public void Setup(float speedMultiplier) {
         for (var i = 0; i < _pathTimes.Count; ++i) {
@@ -35,10 +40,11 @@ public class StreamSpawner : MonoBehaviour {
     private bool _isFirst = true;
     private IEnumerator RunLoopCo() {
         while (_isRunning) {
-            if (_isProcessorSpawner && _isFirst) {
-                _isFirst = false;
-                yield return new WaitForSeconds(UnityEngine.Random.Range(0.1f, 1.5f));
-            }
+            //if (_isProcessorSpawner && _isFirst) {
+            //    _isFirst = false;
+            //    yield return new WaitForSeconds(UnityEngine.Random.Range(0.1f, 1.5f));
+            //}
+
 
             _canSpawn = false;
 
@@ -68,6 +74,7 @@ public class StreamSpawner : MonoBehaviour {
             "islocal", false,
             "position", _paths[i].position,
             "time", _pathTimes[i],
+            "easetype", "linear",
             "oncomplete", "TraversePaths",
             "oncompleteparams", h,
             "oncompletetarget", gameObject));
@@ -75,10 +82,17 @@ public class StreamSpawner : MonoBehaviour {
 
     private void OnFinish(GameObject go) {
         try {
-            Destroy(go);
+            StartCoroutine(WaitToDestroyCo(go));
         } finally {
             _canSpawn = true;
             Finished?.Invoke(this, EventArgs.Empty);
         }
+    }
+
+    private IEnumerator WaitToDestroyCo(GameObject go) {
+        yield return new WaitForSeconds(_trailTime);
+        try {
+            Destroy(go);
+        } catch { }
     }
 }
