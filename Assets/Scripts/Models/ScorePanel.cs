@@ -17,7 +17,7 @@ public class ScorePanel : MonoBehaviour {
         _value.text = $"{score:n2}";
     }
 
-    public void IncrementOverTime(float duration, float finalScore) {
+    public void Run(float duration, float finalScore) {
         if (_isRunning) return;
         _isRunning = true;
         StartCoroutine(IncrementOverTimeCo(duration, finalScore));

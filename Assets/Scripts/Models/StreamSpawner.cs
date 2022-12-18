@@ -35,6 +35,7 @@ public class StreamSpawner : MonoBehaviour {
             _canSpawn = false;
 
             var stream = Instantiate(_streamPrefab, transform);
+            stream.layer = gameObject.layer;
             TraversePaths(new Hashtable { { "stream", stream }, { "index", 0 } });
 
             while(!_canSpawn) {

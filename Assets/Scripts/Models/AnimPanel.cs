@@ -30,20 +30,20 @@ public class AnimPanel : MonoBehaviour {
         _finalScore = isAmd ? setup.AmdFinalDataValue : setup.CompFinalDataValue;
 
         _dataStreamManager.Setup(_isAMD ? 1 : setup.AmdFinalDataValue / setup.CompFinalDataValue);
-
         _scorePanel.Setup(setup.ScoreLabel);
-        InitGraphs(setup.AmdFinalDataValue / setup.CompFinalDataValue);
+        //InitGraphs(setup.AmdFinalDataValue / setup.CompFinalDataValue);
     }
 
     public void RunDemo() {
         if (_isRunning) return;
         _isRunning = true;
 
-        foreach (var g in _graphs) {
-            g.RiseOverTime();
-        }
+        //foreach (var g in _graphs) {
+        //    g.RiseOverTime();
+        //}
 
-        _scorePanel.IncrementOverTime(_totalDurationSec, _finalScore);
+        _dataStreamManager.Run();
+        _scorePanel.Run(_totalDurationSec, _finalScore);
     }
 
     private void InitGraphs(float delta) {
