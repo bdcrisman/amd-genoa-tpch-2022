@@ -56,8 +56,8 @@ public class StreamSpawner : MonoBehaviour {
         h["index"] = i + 1;
 
         iTween.MoveTo(stream, iTween.Hash(
-            "islocal", true,
-            "position", _paths[i],
+            "islocal", false,
+            "position", _paths[i].position,
             "time", _pathTimes[i],
             "oncomplete", "TraversePaths",
             "oncompleteparams", h,
