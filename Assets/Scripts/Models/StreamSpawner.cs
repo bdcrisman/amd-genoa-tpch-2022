@@ -15,7 +15,9 @@ public class StreamSpawner : MonoBehaviour {
     private bool _canSpawn;
 
     public void Setup(float speedMultiplier) {
-        _pathTimes.ForEach(x => x *= speedMultiplier);
+        for (var i = 0; i < _pathTimes.Count; ++i) {
+            _pathTimes[i] *= speedMultiplier;
+        }
     }
 
     public void Run() {
@@ -45,7 +47,7 @@ public class StreamSpawner : MonoBehaviour {
             stream.transform.position = _isProcessorSpawner ? transform.position : _paths[0].position;
             TraversePaths(new Hashtable { { "stream", stream }, { "index", 0 } });
 
-            while(!_canSpawn) {
+            while (!_canSpawn) {
                 yield return null;
             }
         }
@@ -74,11 +76,9 @@ public class StreamSpawner : MonoBehaviour {
     private void OnFinish(GameObject go) {
         try {
             Destroy(go);
+        } finally {
             _canSpawn = true;
-
-            //if (_isProcessorSpawner) {
-                Finished?.Invoke(this, EventArgs.Empty);
-            //}
-        } catch { }
+            Finished?.Invoke(this, EventArgs.Empty);
+        }
     }
 }
