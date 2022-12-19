@@ -1589,7 +1589,7 @@ GameObject:
   - component: {fileID: 8993735389119614825}
   - component: {fileID: 8124063494365884123}
   m_Layer: 6
-  m_Name: BackgroundVideo (1)
+  m_Name: VideoOverlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2034,7 +2034,7 @@ VideoPlayer:
   - {fileID: 0}
   m_DirectAudioVolumes:
   - 1
-  m_Url: file://D:/bcsquared/clients/amd/2022/genoa/tpc-h/amd-genoa-tpch-2022/Assets/StreamingAssets/media/background/data-center-background.mp4
+  m_Url: file://D:/bcsquared/clients/amd/2022/genoa/tpc-h/amd-genoa-tpch-2022/Assets/StreamingAssets/media/background/data-center-background-002.mp4
   m_EnabledAudioTracks: 01
   m_DirectAudioMutes: 00
   m_ControlledAudioTrackCount: 1
