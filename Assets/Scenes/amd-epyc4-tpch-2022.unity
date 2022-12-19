@@ -213,7 +213,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Intensity: 1.5
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -479,7 +479,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Intensity: 1.5
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -1764,6 +1764,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 4999250899742754319, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 5008209129244284153, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -1816,6 +1820,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 5380862870099903974, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 5383908768740743713, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -1855,7 +1863,7 @@ PrefabInstance:
     - target: {fileID: 5750467494123762875, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
       propertyPath: _graphsParent
       value: 
-      objectReference: {fileID: 1643016947}
+      objectReference: {fileID: 0}
     - target: {fileID: 5803156827229089463, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -1928,6 +1936,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 6855648293161703383, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 6927508588191540623, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -1941,6 +1953,10 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6992329307306736522, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7022530433211332381, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
@@ -2128,6 +2144,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 7992507548696553100, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 8066761399621475717, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -2205,11 +2225,6 @@ PrefabInstance:
 --- !u!4 &1643016946 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7516480668161715628, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
-  m_PrefabInstance: {fileID: 1643016945}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1643016947 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 944525507848414990, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
   m_PrefabInstance: {fileID: 1643016945}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1643016948 stripped
@@ -2440,7 +2455,7 @@ PrefabInstance:
     - target: {fileID: 5750467494123762875, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
       propertyPath: _graphsParent
       value: 
-      objectReference: {fileID: 6012742183525879689}
+      objectReference: {fileID: 0}
     - target: {fileID: 7516480668161715628, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -2523,8 +2538,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd046b229d1142f4991b39901c3fd290, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &6012742183525879689 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 944525507848414990, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
-  m_PrefabInstance: {fileID: 6012742183525879686}
-  m_PrefabAsset: {fileID: 0}
