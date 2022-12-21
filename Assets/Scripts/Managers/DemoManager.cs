@@ -35,10 +35,7 @@ public class DemoManager : MonoBehaviour {
     }
 
     private void SetupDemo() {
-        _animManager.Setup(
-            _configManager.SetupConfig,
-            _configManager.AmdData,
-            _configManager.CompData);
+        _animManager.Setup(_configManager.SetupConfig);
     }
 
     private void OnAllConfigLoaded(object sender, EventArgs e) {

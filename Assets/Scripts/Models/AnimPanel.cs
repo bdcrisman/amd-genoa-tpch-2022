@@ -1,19 +1,19 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class AnimPanel : MonoBehaviour {
-    public EventHandler<Dictionary<BarGraph, float>> GraphUpdated;
+    public EventHandler Finished;
 
     [SerializeField] private ScorePanel _scorePanel;
     [SerializeField] private Transform _dataStreamParent;
     [SerializeField] private GameObject _dataStreamPrefab;
     [SerializeField] private DataStreamManager _dataStreamManager;
     [SerializeField] private Video _video;
+    [SerializeField] private SimpleAnimation _processors;
+    [SerializeField] private SimpleAnimation _database;
 
-    private Dictionary<BarGraph, float> _graphsMap = new();
-    private List<BarGraph> _graphs;
-    private DataModel _data;
     private float _totalDurationSec;
     private float _finalScore;
     private bool _isAMD;
@@ -27,26 +27,48 @@ public class AnimPanel : MonoBehaviour {
         _scorePanel.Finished -= OnScoreFinished;
     }
 
-    public void Setup(bool isAmd, SetupConfigModel setup, DataModel data) {
+    public void Setup(bool isAmd, SetupConfigModel setup) {
         _isAMD = isAmd;
-        _data = data;
         _totalDurationSec = setup.DurationSec;
-        _finalScore = isAmd ? setup.AmdFinalDataValue : setup.CompFinalDataValue;
-
-        _dataStreamManager.Setup(_isAMD ? 1 : setup.AmdFinalDataValue / setup.CompFinalDataValue);
+        _finalScore = _isAMD ? setup.AmdFinalDataValue : setup.CompFinalDataValue;
         _scorePanel.Setup(setup.ScoreLabel);
+
+        var multiplier = _isAMD ? setup.AmdFinalDataValue / setup.CompFinalDataValue : 1f;
+        _database.Setup(multiplier);
+        _processors.Setup(multiplier);
+        _dataStreamManager.Setup(multiplier);
     }
 
     public void RunDemo() {
         if (_isRunning) return;
         _isRunning = true;
-
-        _video.Run();
-        _dataStreamManager.Run();
-        _scorePanel.Run(_totalDurationSec, _finalScore);
+        StartCoroutine(SetupDemoAndWaitForActivationsThenRunDemoCo());
     }
 
     private void OnScoreFinished(object sender, EventArgs e) {
         _dataStreamManager.Stop();
+        _processors.Stop();
+        _database.Stop();
+        _video.Stop();
+
+        Finished?.Invoke(this, EventArgs.Empty);
+    }
+
+    private IEnumerator SetupDemoAndWaitForActivationsThenRunDemoCo() {
+        _processors.SetupDemo();
+        _database.SetupDemo();
+
+        while (!_processors.IsActivationComplete || !_database.IsActivationComplete) {
+            yield return null;
+        }
+
+        yield return StartCoroutine(_dataStreamManager.SetupDemoCo());
+
+        _video.Run();
+        _dataStreamManager.Run();
+        _scorePanel.Run(_totalDurationSec, _finalScore);
+
+        _processors.RunAction();
+        _database.RunAction();
     }
 }

@@ -4,15 +4,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class StreamSpawner : MonoBehaviour {
+    const float BaseStreamSpeed = 0.5f;
+
     public EventHandler Finished;
 
-    [SerializeField] private bool _isProcessorSpawner;
     [SerializeField] private List<Transform> _paths;
-    [SerializeField] private List<float> _pathTimes;
     [SerializeField] private GameObject _streamPrefab;
+    [SerializeField] private bool _isProcessorSpawner;
 
+    private float _streamSpeed;
     private float _trailTime;
     private bool _isRunning;
+    private bool _isFinished;
     private bool _canSpawn;
 
     private void OnEnable() {
@@ -20,13 +23,11 @@ public class StreamSpawner : MonoBehaviour {
     }
 
     public void Setup(float speedMultiplier) {
-        for (var i = 0; i < _pathTimes.Count; ++i) {
-            _pathTimes[i] *= speedMultiplier;
-        }
+        _streamSpeed = BaseStreamSpeed / speedMultiplier;
     }
 
     public void Run() {
-        if (_isRunning) return;
+        if (_isRunning || _isFinished) return;
         _isRunning = true;
         _canSpawn = true;
 
@@ -34,18 +35,12 @@ public class StreamSpawner : MonoBehaviour {
     }
 
     public void Stop() {
+        _isFinished = true;
         _isRunning = false;
     }
 
-    private bool _isFirst = true;
     private IEnumerator RunLoopCo() {
         while (_isRunning) {
-            //if (_isProcessorSpawner && _isFirst) {
-            //    _isFirst = false;
-            //    yield return new WaitForSeconds(UnityEngine.Random.Range(0.1f, 1.5f));
-            //}
-
-
             _canSpawn = false;
 
             var stream = Instantiate(_streamPrefab, transform);
@@ -63,7 +58,7 @@ public class StreamSpawner : MonoBehaviour {
         var stream = (GameObject)h["stream"];
         var i = (int)h["index"];
 
-        if (!_isRunning || i >= _paths.Count || i >= _pathTimes.Count) {
+        if (!_isRunning || i >= _paths.Count) {
             OnFinish(stream);
             return;
         }
@@ -73,7 +68,7 @@ public class StreamSpawner : MonoBehaviour {
         iTween.MoveTo(stream, iTween.Hash(
             "islocal", false,
             "position", _paths[i].position,
-            "time", _pathTimes[i],
+            "time", _streamSpeed,
             "easetype", "linear",
             "oncomplete", "TraversePaths",
             "oncompleteparams", h,
@@ -82,15 +77,17 @@ public class StreamSpawner : MonoBehaviour {
 
     private void OnFinish(GameObject go) {
         try {
-            StartCoroutine(WaitToDestroyCo(go));
+            StartCoroutine(WaitToDestroyCo(go, _isRunning ? _trailTime : 0));
         } finally {
-            _canSpawn = true;
-            Finished?.Invoke(this, EventArgs.Empty);
+            if (_isRunning) {
+                _canSpawn = true;
+                Finished?.Invoke(this, EventArgs.Empty);
+            }
         }
     }
 
-    private IEnumerator WaitToDestroyCo(GameObject go) {
-        yield return new WaitForSeconds(_trailTime);
+    private IEnumerator WaitToDestroyCo(GameObject go, float delay) {
+        yield return new WaitForSeconds(delay);
         try {
             Destroy(go);
         } catch { }

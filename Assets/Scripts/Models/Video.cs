@@ -32,6 +32,10 @@ public class Video : MonoBehaviour {
         _vp.Play();
     }
 
+    public void Stop() {
+        _vp.Pause();
+    }
+
     private void Init() {
         var col = _rawImg.color;
         col.a = 0f;
