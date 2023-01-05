@@ -37,6 +37,8 @@ public class AnimPanel : MonoBehaviour {
         _database.Setup(multiplier);
         _processors.Setup(multiplier);
         _dataStreamManager.Setup(multiplier);
+
+        StartCoroutine(_video.SetupCo(setup.DurationSec));
     }
 
     public void RunDemo() {

@@ -2678,7 +2678,7 @@ GameObject:
   - component: {fileID: 3911090875258512334}
   - component: {fileID: 1770115231830500731}
   m_Layer: 6
-  m_Name: BackgroundVideo
+  m_Name: BackgroundMedia
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2763,10 +2763,10 @@ VideoPlayer:
   m_TargetAudioSources:
   - {fileID: 0}
   m_DirectAudioVolumes:
-  - 1
-  m_Url: file://D:/bcsquared/clients/amd/2022/genoa/tpc-h/amd-genoa-tpch-2022/Assets/StreamingAssets/media/background/data-center-background-002.mp4
+  - 0
+  m_Url: file://D:/bcsquared/clients/amd/2022/genoa/tpc-h/amd-genoa-tpch-2022/Assets/StreamingAssets/media/background/it-engineering-rack-servers-in-the-modern-data-center-SBV-332135186-HD_extended.mp4
   m_EnabledAudioTracks: 01
-  m_DirectAudioMutes: 00
+  m_DirectAudioMutes: 01
   m_ControlledAudioTrackCount: 1
   m_PlayOnAwake: 0
   m_SkipOnDrop: 1
