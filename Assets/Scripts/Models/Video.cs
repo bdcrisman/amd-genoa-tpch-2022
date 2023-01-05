@@ -9,6 +9,7 @@ using UnityEngine.Video;
 public class Video : MonoBehaviour {
     private VideoPlayer _vp;
     private RawImage _rawImg;
+    private bool _isRunning;
 
     private void Awake() {
         _vp = GetComponent<VideoPlayer>();
@@ -24,16 +25,51 @@ public class Video : MonoBehaviour {
             yield return null;
 
         _rawImg.texture = _vp.texture;
-        _vp.isLooping = true;
+        _vp.isLooping = false;
     }
 
-    public void  Run() {
+    public IEnumerator SetupCo(float totalDurationSec) {
+        yield break;
+        while (_vp.length <= 0) {
+            yield return null;
+        }
+
+        var ratio = totalDurationSec / (float)_vp.length;
+        if (ratio < 1) yield break;
+
+        print($"{_vp.playbackSpeed} :: {ratio}");
+
+        _vp.playbackSpeed /= ratio;
+    }
+
+    public void Run() {
+        if (_isRunning) return;
+        _isRunning = true;
+
         StartCoroutine(FadeIn());
+        //StartCoroutine(RunCo());
         _vp.Play();
     }
 
     public void Stop() {
+        _isRunning = false;
         _vp.Pause();
+    }
+
+    private IEnumerator RunCo() {
+        var isForward = true;
+
+        while (_isRunning) {
+            print($"playing: {(isForward ? "forward" : "reverse")}");
+            _vp.Play();
+
+            while(_vp.isPlaying) {
+                yield return null;
+            }
+
+            isForward = !isForward;
+            _vp.playbackSpeed = isForward ? 1 : -1;
+        }
     }
 
     private void Init() {
