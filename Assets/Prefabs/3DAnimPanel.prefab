@@ -2508,10 +2508,15 @@ MonoBehaviour:
   - {fileID: 4395806470792859706}
   - {fileID: 4992820061451966809}
   - {fileID: 4400044725803095923}
+  _queryItemPrefab: {fileID: 843740932830299703, guid: 01851dc7060eb50479f0aac0e4209295, type: 3}
   _queryObjectPrefab: {fileID: 4120138499363640719, guid: ca0ef38e0ff8c0442a90a985afe231b7, type: 3}
   _querySpawnPositions:
   - {fileID: 6687321634478966587}
   - {fileID: 5589916607680273953}
+  _mainBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+  _baseColor: {r: 0, g: 0, b: 0, a: 0}
+  _glowColor: {r: 0, g: 0, b: 0, a: 0}
+  _questionMarkColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &5288616765288970995
 GameObject:
   m_ObjectHideFlags: 0
@@ -4481,12 +4486,28 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5114462038808838328, guid: 93cfc27142e301546851939b24bc166b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 7104a6ee8f90e104792cc9d68baada52, type: 3}
+    - target: {fileID: 5114462038808838328, guid: 93cfc27142e301546851939b24bc166b, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8031233940934892236, guid: 93cfc27142e301546851939b24bc166b, type: 3}
       propertyPath: m_Name
       value: Processors
       objectReference: {fileID: 0}
     - target: {fileID: 8031233940934892236, guid: 93cfc27142e301546851939b24bc166b, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8800052587697109235, guid: 93cfc27142e301546851939b24bc166b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 7104a6ee8f90e104792cc9d68baada52, type: 3}
+    - target: {fileID: 8800052587697109235, guid: 93cfc27142e301546851939b24bc166b, type: 3}
+      propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

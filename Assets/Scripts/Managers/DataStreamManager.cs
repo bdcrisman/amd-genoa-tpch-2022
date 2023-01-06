@@ -23,8 +23,15 @@ public class DataStreamManager : MonoBehaviour {
     [SerializeField] private List<Image> _procsToScores;
 
     [Header("Query object")]
+    [SerializeField] private QueryItem _queryItemPrefab;
     [SerializeField] private QueryObject _queryObjectPrefab;
     [SerializeField] private List<Transform> _querySpawnPositions;
+
+    [Header("Colors")]
+    [SerializeField] private Color _mainBackgroundColor;
+    [SerializeField] private Color _baseColor;
+    [SerializeField] private Color _glowColor;
+    [SerializeField] private Color _questionMarkColor;
 
     private List<StreamSpawner> _leftProcessorStreamSpawners;
     private List<StreamSpawner> _rightProcessorStreamSpawners;
@@ -135,10 +142,33 @@ public class DataStreamManager : MonoBehaviour {
     }
 
     private void SpawnQueryObject() {
-        var queryObj_0 = Instantiate(_queryObjectPrefab, _querySpawnPositions[0]);
-        queryObj_0.Setup(gameObject.layer, _querySpawnPositions[0].position);
+        var queryItem_0 = Instantiate(_queryItemPrefab, _querySpawnPositions[0]);
+        queryItem_0.Setup(gameObject.layer, _querySpawnPositions[0].position, GetRandQueryType(), new QueryItemColors {
+            MainBackgroundColor = _mainBackgroundColor,
+            BaseColor = _baseColor,
+            GlowColor = _glowColor,
+            QuestionMarkColor = _questionMarkColor
+        });
         
-        var queryObj_1 = Instantiate(_queryObjectPrefab, _querySpawnPositions[1]);
-        queryObj_1.Setup(gameObject.layer, _querySpawnPositions[1].position);
+        var queryItem_1 = Instantiate(_queryItemPrefab, _querySpawnPositions[1]);
+        queryItem_1.Setup(gameObject.layer, _querySpawnPositions[1].position, GetRandQueryType(), new QueryItemColors {
+            MainBackgroundColor = _mainBackgroundColor,
+            BaseColor = _baseColor,
+            GlowColor = _glowColor,
+            QuestionMarkColor = _questionMarkColor
+        });
+
+        //var queryObj_0 = Instantiate(_queryObjectPrefab, _querySpawnPositions[0]);
+        //queryObj_0.Setup(gameObject.layer, _querySpawnPositions[0].position);
+        
+        //var queryObj_1 = Instantiate(_queryObjectPrefab, _querySpawnPositions[1]);
+        //queryObj_1.Setup(gameObject.layer, _querySpawnPositions[1].position);
+    }
+
+    private QueryType GetRandQueryType() {
+        var rand = UnityEngine.Random.Range(0, 4);
+        print($"{(QueryType)rand}");
+
+        return (QueryType)rand;
     }
 }
