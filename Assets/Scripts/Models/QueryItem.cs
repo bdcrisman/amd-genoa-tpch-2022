@@ -79,10 +79,11 @@ public class QueryItem : MonoBehaviour {
     }
 
     public void OnStart() {
+        StartCoroutine(FadeOut(_mainBackground));
+        StartCoroutine(FadeOut(_border));
         StartCoroutine(FadeOut(_base));
         StartCoroutine(FadeOut(_glow));
         StartCoroutine(FadeOut(_questionMark));
-        StartCoroutine(FadeOut(_mainBackground));
         StartCoroutine(FadeOut(_currentItem));
     }
 
