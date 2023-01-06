@@ -24,7 +24,6 @@ public class DataStreamManager : MonoBehaviour {
 
     [Header("Query object")]
     [SerializeField] private QueryItem _queryItemPrefab;
-    [SerializeField] private QueryObject _queryObjectPrefab;
     [SerializeField] private List<Transform> _querySpawnPositions;
 
     [Header("Colors")]
@@ -65,13 +64,11 @@ public class DataStreamManager : MonoBehaviour {
     }
 
     private void OnProcessorSpawnerFinished(bool isLeftSide) {
-        if (isLeftSide) return;
-
         _leftDatabaseStreamSpawner.Run();
         _rightDatabaseStreamSpawner.Run();
 
         // query object
-        SpawnQueryObject();
+        SpawnQueryObject(isLeftSide);
     }
 
     public void Setup(float delta) {
@@ -127,9 +124,9 @@ public class DataStreamManager : MonoBehaviour {
 
     private IEnumerator DrawListPathsCo(List<Image> paths, float duration) {
         for (var i = 0; i < paths.Count; i += 2) {
-            var t = 0f;
             var path0 = paths[i];
             var path1 = paths[i + 1];
+            var t = 0f;
 
             while (t < duration) {
                 var fillAmount = Mathf.Lerp(0, 1, t / duration);
@@ -143,15 +140,20 @@ public class DataStreamManager : MonoBehaviour {
         }
     }
 
-    private void SpawnQueryObject() {
-        var queryItem_0 = Instantiate(_queryItemPrefab, _querySpawnPositions[0]);
-        queryItem_0.Setup(gameObject.layer, _querySpawnPositions[0].position, GetRandQueryType(), new QueryItemColors {
-            MainBackgroundColor = _mainBackgroundColor,
-            BaseColor = _baseColor,
-            GlowColor = _glowColor,
-            QuestionMarkColor = _questionMarkColor
-        });
+    private void SpawnQueryObject(bool isLeftSide) {
+        if (isLeftSide) {
+            var queryItem_0 = Instantiate(_queryItemPrefab, _querySpawnPositions[0]);
+            queryItem_0.Setup(gameObject.layer, _querySpawnPositions[0].position, GetRandQueryType(), new QueryItemColors {
+                MainBackgroundColor = _mainBackgroundColor,
+                BaseColor = _baseColor,
+                GlowColor = _glowColor,
+                QuestionMarkColor = _questionMarkColor
+            });
+
+            return;
+        }
         
+        // right side
         var queryItem_1 = Instantiate(_queryItemPrefab, _querySpawnPositions[1]);
         queryItem_1.Setup(gameObject.layer, _querySpawnPositions[1].position, GetRandQueryType(), new QueryItemColors {
             MainBackgroundColor = _mainBackgroundColor,
@@ -159,12 +161,6 @@ public class DataStreamManager : MonoBehaviour {
             GlowColor = _glowColor,
             QuestionMarkColor = _questionMarkColor
         });
-
-        //var queryObj_0 = Instantiate(_queryObjectPrefab, _querySpawnPositions[0]);
-        //queryObj_0.Setup(gameObject.layer, _querySpawnPositions[0].position);
-        
-        //var queryObj_1 = Instantiate(_queryObjectPrefab, _querySpawnPositions[1]);
-        //queryObj_1.Setup(gameObject.layer, _querySpawnPositions[1].position);
     }
 
     private QueryType GetRandQueryType() {

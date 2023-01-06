@@ -2381,7 +2381,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8171517830521926205, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
       propertyPath: _baseColor.a
-      value: 0.5019608
+      value: 0.78431374
       objectReference: {fileID: 0}
     - target: {fileID: 8171517830521926205, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
       propertyPath: _glowColor.a
@@ -2929,7 +2929,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8171517830521926205, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
       propertyPath: _baseColor.a
-      value: 0.5019608
+      value: 0.78431374
       objectReference: {fileID: 0}
     - target: {fileID: 8171517830521926205, guid: 5211738e40deb20428dbd3c8b3606de5, type: 3}
       propertyPath: _baseColor.b
