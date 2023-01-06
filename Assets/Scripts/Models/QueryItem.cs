@@ -25,10 +25,10 @@ public class QueryItem : MonoBehaviour {
     [SerializeField] private SpriteRenderer _questionMark;
 
     [Header("Query Type Containers")]
-    [SerializeField] private GameObject _pricingSummary;
-    [SerializeField] private GameObject _lowestCostSupplier;
-    [SerializeField] private GameObject _transportationPriority;
-    [SerializeField] private GameObject _returnReport;
+    [SerializeField] private SpriteRenderer _pricingSummary;
+    [SerializeField] private SpriteRenderer _lowestCostSupplier;
+    [SerializeField] private SpriteRenderer _transportationPriority;
+    [SerializeField] private SpriteRenderer _returnReport;
 
     private SpriteRenderer _currentItem;
 
@@ -46,6 +46,11 @@ public class QueryItem : MonoBehaviour {
         _transportationPriority.gameObject.layer = layer;
         _returnReport.gameObject.layer = layer;
 
+        _pricingSummary.gameObject.layer = layer;
+        _lowestCostSupplier.gameObject.layer = layer;
+        _transportationPriority.gameObject.layer = layer;
+        _returnReport.gameObject.layer = layer;
+
         // set position
         transform.position = pos;
 
@@ -56,18 +61,18 @@ public class QueryItem : MonoBehaviour {
         _questionMark.color = colors.QuestionMarkColor;
 
         // set activity
-        _pricingSummary.SetActive(qt == QueryType.PricingSummary);
-        _lowestCostSupplier.SetActive(qt == QueryType.LowestCostSupplier);
-        _transportationPriority.SetActive(qt == QueryType.TransportationPriority);
-        _returnReport.SetActive(qt == QueryType.ReturnReport);
+        _pricingSummary.gameObject.SetActive(qt == QueryType.PricingSummary);
+        _lowestCostSupplier.gameObject.SetActive(qt == QueryType.LowestCostSupplier);
+        _transportationPriority.gameObject.SetActive(qt == QueryType.TransportationPriority);
+        _returnReport.gameObject.SetActive(qt == QueryType.ReturnReport);
 
         // set current item
         _currentItem = qt switch {
-            QueryType.PricingSummary => _pricingSummary.transform.GetChild(0).GetComponent<SpriteRenderer>(),
-            QueryType.LowestCostSupplier=> _lowestCostSupplier.transform.GetChild(0).GetComponent<SpriteRenderer>(),
-            QueryType.TransportationPriority => _transportationPriority.transform.GetChild(0).GetComponent<SpriteRenderer>(),
-            QueryType.ReturnReport => _returnReport.transform.GetChild(0).GetComponent<SpriteRenderer>(),
-            _ => _pricingSummary.transform.GetChild(0).GetComponent<SpriteRenderer>()
+            QueryType.PricingSummary => _pricingSummary, //.transform.GetChild(0).GetComponent<SpriteRenderer>(),
+            QueryType.LowestCostSupplier=> _lowestCostSupplier, //.transform.GetChild(0).GetComponent<SpriteRenderer>(),
+            QueryType.TransportationPriority => _transportationPriority, //.transform.GetChild(0).GetComponent<SpriteRenderer>(),
+            QueryType.ReturnReport => _returnReport, //.transform.GetChild(0).GetComponent<SpriteRenderer>(),
+            _ => _pricingSummary, //.transform.GetChild(0).GetComponent<SpriteRenderer>()
         };
 
         _currentItem.gameObject.layer = layer;

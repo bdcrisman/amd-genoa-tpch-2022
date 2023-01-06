@@ -52,8 +52,8 @@ public class DataStreamManager : MonoBehaviour {
     }
 
     private void OnDisable() {
-        _leftProcessorStreamSpawners.ForEach(x => x.Finished -= (s, e) => OnProcessorSpawnerFinished());
-        _rightProcessorStreamSpawners.ForEach(x => x.Finished -= (s, e) => OnProcessorSpawnerFinished());
+        _leftProcessorStreamSpawners.ForEach(x => x.Finished -= (s, e) => OnProcessorSpawnerFinished(true));
+        _rightProcessorStreamSpawners.ForEach(x => x.Finished -= (s, e) => OnProcessorSpawnerFinished(false));
 
         _leftDatabaseStreamSpawner.Finished -= (s, e) => OnDatabaseSpawnerFinished();
         _rightDatabaseStreamSpawner.Finished -= (s, e) => OnDatabaseSpawnerFinished();
@@ -64,7 +64,9 @@ public class DataStreamManager : MonoBehaviour {
         _rightScoreStreamSpawner.Run();
     }
 
-    private void OnProcessorSpawnerFinished() {
+    private void OnProcessorSpawnerFinished(bool isLeftSide) {
+        if (isLeftSide) return;
+
         _leftDatabaseStreamSpawner.Run();
         _rightDatabaseStreamSpawner.Run();
 
@@ -78,8 +80,8 @@ public class DataStreamManager : MonoBehaviour {
         _rightProcessorStreamSpawners = _rightProcessorStreamsParent.GetComponentsInChildren<StreamSpawner>().ToList();
 
         // events
-        _leftProcessorStreamSpawners.ForEach(x => x.Finished += (s, e) => OnProcessorSpawnerFinished());
-        _rightProcessorStreamSpawners.ForEach(x => x.Finished += (s, e) => OnProcessorSpawnerFinished());
+        _leftProcessorStreamSpawners.ForEach(x => x.Finished += (s, e) => OnProcessorSpawnerFinished(true));
+        _rightProcessorStreamSpawners.ForEach(x => x.Finished += (s, e) => OnProcessorSpawnerFinished(false));
         _leftDatabaseStreamSpawner.Finished += (s, e) => OnDatabaseSpawnerFinished();
         _rightDatabaseStreamSpawner.Finished += (s, e) => OnDatabaseSpawnerFinished();
 
@@ -167,8 +169,6 @@ public class DataStreamManager : MonoBehaviour {
 
     private QueryType GetRandQueryType() {
         var rand = UnityEngine.Random.Range(0, 4);
-        print($"{(QueryType)rand}");
-
         return (QueryType)rand;
     }
 }
